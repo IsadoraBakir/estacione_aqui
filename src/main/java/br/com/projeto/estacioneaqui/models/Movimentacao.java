@@ -1,6 +1,7 @@
 package br.com.projeto.estacioneaqui.models;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 
 import br.com.projeto.estacioneaqui.models.enums.TipoDeMovimentacao;
 
@@ -14,9 +15,9 @@ public class Movimentacao {
 
 	private String placaCliente;
 
-	private LocalDate entrada;
+	private Calendar entrada;
 
-	private LocalDate saida;
+	private Calendar saida;
 
 	private Double valor;
 
@@ -52,19 +53,19 @@ public class Movimentacao {
 		this.placaCliente = placaCliente;
 	}
 
-	public LocalDate getEntrada() {
+	public Calendar getEntrada() {
 		return entrada;
 	}
 
-	public void setEntrada(LocalDate entrada) {
+	public void setEntrada(Calendar entrada) {
 		this.entrada = entrada;
 	}
 
-	public LocalDate getSaida() {
+	public Calendar getSaida() {
 		return saida;
 	}
 
-	public void setSaida(LocalDate saida) {
+	public void setSaida(Calendar saida) {
 		this.saida = saida;
 	}
 
