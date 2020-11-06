@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,10 +23,13 @@ public class Funcionario {
 
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
+	
+//	@Column(name = "salario", nullable = false)
+//	private Double salario;
 
-	@ManyToOne
-	@JoinColumn(name = "cargo_id", nullable = false)
-	private Cargo cargo;
+//	@ManyToOne
+//	@JoinColumn(name = "cargo_id", nullable = false)
+//	private Cargo cargo;
 
 	public Long getId() {
 		return id;

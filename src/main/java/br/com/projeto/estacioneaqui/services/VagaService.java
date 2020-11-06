@@ -4,13 +4,20 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.projeto.estacioneaqui.dto.CargoDto;
-import br.com.projeto.estacioneaqui.models.Cargo;
+import br.com.projeto.estacioneaqui.models.Vaga;
 
 @Service
-public interface CargoService {
+public interface VagaService {
 	
-	CargoDto cadastrar(CargoDto cargo);
+	Vaga cadastrar(Vaga vaga);
 	
-	List<Cargo> listarTodos();
+	List<Vaga> listar();
+	
+	Vaga detalhar(Long id);
+	
+	boolean remover(Long id);
+	
+	Vaga atualizar(Long id, Vaga vaga);
+//	CargoDto cadastrar(CargoDto cargo);
+//	
 }

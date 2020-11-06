@@ -3,9 +3,9 @@ package br.com.projeto.estacioneaqui.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.projeto.estacioneaqui.models.Funcionario;
+import br.com.projeto.estacioneaqui.models.Vaga;
 
 @Repository
-public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
+public interface VagaRepository extends JpaRepository<Vaga, Long>{
 
 }

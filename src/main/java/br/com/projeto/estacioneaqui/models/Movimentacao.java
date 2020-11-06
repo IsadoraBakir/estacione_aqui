@@ -1,26 +1,55 @@
 package br.com.projeto.estacioneaqui.models;
 
-import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
-import br.com.projeto.estacioneaqui.models.enums.TipoDeMovimentacao;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "movimentacoes")
 public class Movimentacao {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private TipoDeMovimentacao tipo;
+	@ManyToOne
+	@JoinColumn(name = "cliente_id", nullable = false)
+	private Cliente cliente;
 
-	private String cpfCliente;
+	@ManyToOne
+	@JoinColumn(name = "veiculo_id", nullable = false)
+	private Veiculo veiculo;
 
-	private String placaCliente;
+	@ManyToOne
+	@JoinColumn(name = "vaga_id", nullable = false)
+	private Vaga vaga;
+	
+	@ManyToOne
+	@JoinColumn(name = "servico_id", nullable = false)
+	private Servico servico;
 
-	private Calendar entrada;
+	@Column(name = "entrada", nullable = false)
+	private Date entrada;
 
+	@Column(name = "saida")
 	private Calendar saida;
 
+	@Column(name = "valor")
 	private Double valor;
 
+	public Movimentacao() {
+		this.entrada = Calendar.getInstance().getTime();
+		this.valor = 0.0;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -29,35 +58,36 @@ public class Movimentacao {
 		this.id = id;
 	}
 
-	public TipoDeMovimentacao getTipo() {
-		return tipo;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setTipo(TipoDeMovimentacao tipo) {
-		this.tipo = tipo;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
-	public String getCpfCliente() {
-		return cpfCliente;
+	public Veiculo getVeiculo() {
+		return veiculo;
 	}
 
-	public void setCpfCliente(String cpfCliente) {
-		this.cpfCliente = cpfCliente;
+	public void setVeiculo(Veiculo veiculo) {
+		this.veiculo = veiculo;
 	}
 
-	public String getPlacaCliente() {
-		return placaCliente;
+//	@NotNull(message = "A vaga é uma informação obrigatória")
+	public Vaga getVaga() {
+		return vaga;
 	}
 
-	public void setPlacaCliente(String placaCliente) {
-		this.placaCliente = placaCliente;
+	public void setVaga(Vaga vaga) {
+		this.vaga = vaga;
 	}
 
-	public Calendar getEntrada() {
+	public Date getEntrada() {
 		return entrada;
 	}
 
-	public void setEntrada(Calendar entrada) {
+	public void setEntrada(Date entrada) {
 		this.entrada = entrada;
 	}
 
