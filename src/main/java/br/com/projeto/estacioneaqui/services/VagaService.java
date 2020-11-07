@@ -20,4 +20,6 @@ public interface VagaService {
 	Vaga atualizar(Long id, Vaga alteracao);
 //	CargoDto cadastrar(CargoDto cargo);
 //	
+
+	Vaga findById(Long id);
 }

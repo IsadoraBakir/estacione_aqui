@@ -22,9 +22,12 @@ public class Servico {
 //	
 //	@NotBlank
 //	@OneToMany(mappedBy = "servico")
-
-	@Column(name = "precoHora")
+	@Column(name = "precoPorHora", nullable = false)
 	private double precoPorHora;
+	
+	public Servico() {
+		this.precoPorHora = 0.0;
+	}
 
 	public Long getId() {
 		return id;
@@ -42,12 +45,12 @@ public class Servico {
 		this.descricao = descricao;
 	}
 
-//	public double getPrecoPorHora() {
-//		return precoPorHora;
-//	}
-//
-//	public void setPrecoPorHora(double precoPorHora) {
-//		this.precoPorHora = precoPorHora;
-//	}
+	public double getPrecoPorHora() {
+		return precoPorHora;
+	}
+
+	public void setPrecoPorHora(double precoPorHora) {
+		this.precoPorHora = precoPorHora;
+	}
 
 }

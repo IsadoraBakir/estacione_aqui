@@ -25,15 +25,15 @@ public class VagaServiceImpl implements VagaService {
 	}
 
 	@Override
-	@Transactional
-	public Vaga cadastrar(Vaga vaga) {
-		return vagaRepository.save(vaga);
-	}
-
-	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Vaga detalhar(Long id) {
 		return vagaRepository.findById(id).get();
+	}
+	
+	@Override
+	@Transactional
+	public Vaga cadastrar(Vaga vaga) {
+		return vagaRepository.save(vaga);
 	}
 
 	@Override
@@ -56,6 +56,11 @@ public class VagaServiceImpl implements VagaService {
 		Vaga vaga = detalhar(id);
 		alteracao.setId(vaga.getId());
 		return vagaRepository.save(alteracao);
+	}
+
+	@Override
+	public Vaga findById(Long id) {
+		return vagaRepository.findById(id).get();
 	}
 
 //	public VagaServiceImpl(VagaRepository vagaRepository) {

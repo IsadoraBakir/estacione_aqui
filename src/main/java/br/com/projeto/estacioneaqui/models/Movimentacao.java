@@ -40,15 +40,28 @@ public class Movimentacao {
 	private Date entrada;
 
 	@Column(name = "saida")
-	private Calendar saida;
+	private Date saida;
 
 	@Column(name = "valor")
 	private Double valor;
-
+	
 	public Movimentacao() {
+		
+	}
+
+	public Movimentacao(Cliente cliente, Veiculo veiculo, Vaga vaga, Servico servico) {
+		this.cliente = cliente;
+		this.veiculo = veiculo;
+		this.vaga = vaga;
+		this.servico = servico;
 		this.entrada = Calendar.getInstance().getTime();
 		this.valor = 0.0;
 	}
+	
+//	public Movimentacao(Double valorFinal) {
+//		this.saida = Calendar.getInstance().getTime();
+//		this.valor = valorFinal;
+//	}
 	
 	public Long getId() {
 		return id;
@@ -91,11 +104,11 @@ public class Movimentacao {
 		this.entrada = entrada;
 	}
 
-	public Calendar getSaida() {
+	public Date getSaida() {
 		return saida;
 	}
 
-	public void setSaida(Calendar saida) {
+	public void setSaida(Date saida) {
 		this.saida = saida;
 	}
 

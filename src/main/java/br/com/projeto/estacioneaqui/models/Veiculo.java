@@ -33,10 +33,10 @@ public class Veiculo {
 	@Column(name = "observacoes")
 	private String observacoes;
 //
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "veiculos_clientes", joinColumns = { @JoinColumn(name = "veiculo_id") }, inverseJoinColumns = {
-//			@JoinColumn(name = "cliente_id") })
-//	private List<Cliente> clientes;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "veiculos_clientes", joinColumns = { @JoinColumn(name = "veiculo_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "cliente_id") })
+	private List<Cliente> clientes;
 	
 //	@OneToMany(mappedBy = "cliente")
 //	private List<Movimentacao> movimentacoes;
@@ -64,5 +64,21 @@ public class Veiculo {
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
+
+	public String getObservacoes() {
+		return observacoes;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
+	}
+
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
+	}	
 
 }

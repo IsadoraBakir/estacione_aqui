@@ -19,62 +19,64 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.projeto.estacioneaqui.models.Cliente;
+import br.com.projeto.estacioneaqui.models.Servico;
 import br.com.projeto.estacioneaqui.responses.Response;
-import br.com.projeto.estacioneaqui.services.ClienteService;
+import br.com.projeto.estacioneaqui.services.ServicoService;
 
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/servico")
+public class ServicoController {
 
 	@Autowired
-	private ClienteService clienteService;
-	
+	private ServicoService servicoService;
+
 	@GetMapping
-	public ResponseEntity<List<Cliente>> listar() {
-		List<Cliente> clientes = clienteService.listar();
-		return ResponseEntity.ok().body(clientes);
+	public ResponseEntity<List<Servico>> listar() {
+		List<Servico> servicos = servicoService.listar();
+		return ResponseEntity.ok().body(servicos);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Response<Cliente>> detalhar(@PathVariable("id") Long id) {
-		Response<Cliente> response = new Response<>();
-		Cliente cliente = clienteService.detalhar(id);
-		response.setData(cliente);
+	public ResponseEntity<Response<Servico>> detalhar(@PathVariable("id") Long id) {
+		Response<Servico> response = new Response<>();
+		Servico servico = servicoService.detalhar(id);
+		response.setData(servico);
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@PutMapping("/atualizar/{id}")
-	public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente alteracao) {
-		return clienteService.atualizar(id, alteracao);
+	public Servico atualizar(@PathVariable Long id, @RequestBody Servico alteracao) {
+		return servicoService.atualizar(id, alteracao);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean cliente = clienteService.remover(id);
-		if (cliente) {
+		boolean servico = servicoService.remover(id);
+		if (servico) {
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Cliente>> cadastrar(@RequestBody @Valid Cliente cliente, UriComponentsBuilder uriBuilder,
+	public ResponseEntity<Response<Servico>> cadastrar(@RequestBody @Valid Servico servico, UriComponentsBuilder uriBuilder,
 			BindingResult result) {
-		Response<Cliente> response = new Response<>();
+
+		Response<Servico> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Cliente clienteCadastrado = clienteService.cadastrar(cliente);
+		Servico servicoCadastrado = servicoService.cadastrar(servico);
 
-		URI uri = uriBuilder.path("/cliente/{id}").buildAndExpand(clienteCadastrado.getId()).toUri();
+		URI uri = uriBuilder.path("/vaga/{id}").buildAndExpand(servicoCadastrado.getId()).toUri();
 
-		response.setData(clienteCadastrado);
+		response.setData(servicoCadastrado);
 
 		return ResponseEntity.created(uri).body(response);
 	}
+
 }

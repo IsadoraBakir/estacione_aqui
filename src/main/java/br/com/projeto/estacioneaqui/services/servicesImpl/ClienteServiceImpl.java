@@ -42,6 +42,7 @@ public class ClienteServiceImpl implements ClienteService {
 
 		Cliente cliente = detalhar(id);
 		alteracao.setId(cliente.getId());
+		
 		return clienteRepository.save(alteracao);
 	}
 
@@ -57,6 +58,11 @@ public class ClienteServiceImpl implements ClienteService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public Cliente findById(Long id) {
+		return clienteRepository.findById(id).get();
 	}
 
 }

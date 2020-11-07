@@ -1,10 +1,14 @@
 package br.com.projeto.estacioneaqui.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,8 +31,8 @@ public class Cliente {
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
 	
-//	@ManyToMany(mappedBy = "clientes", fetch = FetchType.EAGER)
-//	private List<Veiculo> veiculo;
+	@ManyToMany(mappedBy = "clientes", fetch = FetchType.EAGER)
+	private List<Veiculo> veiculo;
 	
 //	@OneToMany(mappedBy = "cliente")
 //	private List<Movimentacao> movimentacoes;
@@ -68,6 +72,14 @@ public class Cliente {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public List<Veiculo> getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(List<Veiculo> veiculo) {
+		this.veiculo = veiculo;
 	}
 
 }

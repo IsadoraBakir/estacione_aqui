@@ -28,7 +28,7 @@ import br.com.projeto.estacioneaqui.services.VagaService;
 public class VagaController {
 
 	@Autowired
-	VagaService vagaService;
+	private VagaService vagaService;
 
 	@GetMapping
 	public ResponseEntity<List<Vaga>> listar() {
