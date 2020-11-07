@@ -14,16 +14,10 @@ import br.com.projeto.estacioneaqui.services.VagaService;
 
 @Service
 public class VagaServiceImpl implements VagaService {
-	
+
 	@Autowired
 	private VagaRepository vagaRepository;
-	
-	@Override
-	@Transactional
-	public Vaga cadastrar(Vaga vaga) {
-		return vagaRepository.save(vaga);
-	}
-	
+
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<Vaga> listar() {
@@ -31,30 +25,39 @@ public class VagaServiceImpl implements VagaService {
 	}
 
 	@Override
+	@Transactional
+	public Vaga cadastrar(Vaga vaga) {
+		return vagaRepository.save(vaga);
+	}
+
+	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Vaga detalhar(Long id) {
 		return vagaRepository.findById(id).get();
 	}
-	
+
 	@Override
 	@Transactional
 	public boolean remover(Long id) {
+
 		Optional<Vaga> vaga = vagaRepository.findById(id);
+
 		if (vaga.isPresent()) {
 			vagaRepository.deleteById(id);
 			return true;
 		} else
 			return false;
 	}
-	
+
 	@Override
 	@Transactional
-	public Vaga atualizar(Long id, Vaga vagaAlterada) {
+	public Vaga atualizar(Long id, Vaga alteracao) {
+
 		Vaga vaga = detalhar(id);
-		vagaAlterada.setId(vaga.getId());
-		return vagaRepository.save(vagaAlterada);
+		alteracao.setId(vaga.getId());
+		return vagaRepository.save(alteracao);
 	}
-	
+
 //	public VagaServiceImpl(VagaRepository vagaRepository) {
 //		this.vagaRepository = vagaRepository;
 //	}
@@ -86,6 +89,5 @@ public class VagaServiceImpl implements VagaService {
 //		return cargoDto;
 //	}
 //
-
 
 }

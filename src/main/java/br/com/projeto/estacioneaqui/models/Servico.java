@@ -22,7 +22,9 @@ public class Servico {
 //	
 //	@NotBlank
 //	@OneToMany(mappedBy = "servico")
-//	private double precoPorHora;
+
+	@Column(name = "precoHora")
+	private double precoPorHora;
 
 	public Long getId() {
 		return id;

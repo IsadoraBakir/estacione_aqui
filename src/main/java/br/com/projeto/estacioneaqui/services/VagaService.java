@@ -17,7 +17,7 @@ public interface VagaService {
 	
 	boolean remover(Long id);
 	
-	Vaga atualizar(Long id, Vaga vaga);
+	Vaga atualizar(Long id, Vaga alteracao);
 //	CargoDto cadastrar(CargoDto cargo);
 //	
 }

@@ -19,64 +19,62 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.projeto.estacioneaqui.models.Vaga;
+import br.com.projeto.estacioneaqui.models.Cliente;
 import br.com.projeto.estacioneaqui.responses.Response;
-import br.com.projeto.estacioneaqui.services.VagaService;
+import br.com.projeto.estacioneaqui.services.ClienteService;
 
 @RestController
-@RequestMapping("/vaga")
-public class VagaController {
+@RequestMapping("/cliente")
+public class ClienteController {
 
 	@Autowired
-	VagaService vagaService;
-
+	ClienteService clienteService;
+	
 	@GetMapping
-	public ResponseEntity<List<Vaga>> listar() {
-		List<Vaga> vagas = vagaService.listar();
-		return ResponseEntity.ok().body(vagas);
+	public ResponseEntity<List<Cliente>> listar() {
+		List<Cliente> clientes = clienteService.listar();
+		return ResponseEntity.ok().body(clientes);
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Response<Vaga>> detalhar(@PathVariable("id") Long id) {
-		Response<Vaga> response = new Response<>();
-		Vaga vaga = vagaService.detalhar(id);
-		response.setData(vaga);
+	public ResponseEntity<Response<Cliente>> detalhar(@PathVariable("id") Long id) {
+		Response<Cliente> response = new Response<>();
+		Cliente cliente = clienteService.detalhar(id);
+		response.setData(cliente);
 		return ResponseEntity.ok().body(response);
 	}
 	
 	@PutMapping("/atualizar/{id}")
-	public Vaga atualizar(@PathVariable Long id, @RequestBody Vaga alteracao) {
-		return vagaService.atualizar(id, alteracao);
+	public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente alteracao) {
+		return clienteService.atualizar(id, alteracao);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean vaga = vagaService.remover(id);
-		if (vaga) {
+		boolean cliente = clienteService.remover(id);
+		if (cliente) {
 			return ResponseEntity.ok().build();
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
+	
 	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Vaga>> cadastrar(@RequestBody @Valid Vaga vaga, UriComponentsBuilder uriBuilder,
+	public ResponseEntity<Response<Cliente>> cadastrar(@RequestBody @Valid Cliente cliente, UriComponentsBuilder uriBuilder,
 			BindingResult result) {
-
-		Response<Vaga> response = new Response<>();
+		Response<Cliente> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
 		}
 
-		Vaga vagaCadastrada = vagaService.cadastrar(vaga);
+		Cliente clienteCadastrado = clienteService.cadastrar(cliente);
 
-		URI uri = uriBuilder.path("/vaga/{id}").buildAndExpand(vagaCadastrada.getId()).toUri();
+		URI uri = uriBuilder.path("/cliente/{id}").buildAndExpand(clienteCadastrado.getId()).toUri();
 
-		response.setData(vagaCadastrada);
+		response.setData(clienteCadastrado);
 
 		return ResponseEntity.created(uri).body(response);
 	}
-
 }

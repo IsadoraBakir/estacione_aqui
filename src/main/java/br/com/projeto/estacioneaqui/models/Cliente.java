@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "clientes")
@@ -38,6 +41,7 @@ public class Cliente {
 		this.id = id;
 	}
 
+	@NotNull(message = "Nome é obrigatório")
 	public String getNome() {
 		return nome;
 	}
@@ -46,6 +50,8 @@ public class Cliente {
 		this.nome = nome;
 	}
 
+	@NotNull(message = "Digite CPF somente com números")
+	@Length(min = 11)
 	public String getCpf() {
 		return cpf;
 	}
@@ -54,6 +60,8 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
+	@NotNull(message = "Telefone deve conter DDD")
+	@Length(min = 10)
 	public String getTelefone() {
 		return telefone;
 	}
