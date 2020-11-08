@@ -2,6 +2,7 @@ package br.com.projeto.estacioneaqui.services.servicesImpl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +30,16 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
 	@Autowired
 	private MovimentacaoRepository movimentacaoRepository;
-	
+
 	@Autowired
 	private ClienteService clienteService;
-	
+
 	@Autowired
 	private VeiculoService veiculoService;
-	
+
 	@Autowired
 	private VagaService vagaService;
-	
+
 	@Autowired
 	private ServicoService servicoService;
 
@@ -53,17 +54,17 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	public Movimentacao detalhar(Long id) {
 		return movimentacaoRepository.findById(id).get();
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Boolean movimentacaoExiste(Long id) {
-		
+
 		Optional<Movimentacao> movimentacao = movimentacaoRepository.findById(id);
-		
+
 		if (movimentacao.isPresent()) {
 			return true;
-		} 
-			return false;
+		}
+		return false;
 	}
 
 	@Override
@@ -86,95 +87,38 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	}
 
 	@Override
-	@Transactional
-	public Movimentacao atualizar(Long id, Movimentacao alteracao) {
-
-		Movimentacao movimentacao = detalhar(id);
-		alteracao.setId(movimentacao.getId());
-		return movimentacaoRepository.save(alteracao);
-	}
-
-	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Movimentacao converter(CheckinForm form) {
-		
+
 		Cliente cliente = clienteService.findById(form.getClienteId());
 		Veiculo veiculo = veiculoService.findById(form.getVeiculoId());
 		Vaga vaga = vagaService.findById(form.getVagaId());
 		Servico servico = servicoService.findById(form.getServicoId());
-		
+
 		Movimentacao movimentacao = new Movimentacao(cliente, veiculo, vaga, servico);
 
-//		List<Veiculo> veiculos = new ArrayList<>();
-//		veiculos.add(veiculo);
-//		cliente.setVeiculo(veiculos);
-		
 		return cadastrar(movimentacao);
 	}
-	
+
 	@Override
 	@Transactional
 	public Movimentacao checkout(Movimentacao movimentacao) {
 		
-		movimentacao.getEntrada();
 		movimentacao.setSaida(LocalDateTime.now());
-		
-		Double precoPorHora = movimentacao.getServico().getPrecoPorHora();
-		
-		Double valorFinal = calcularValorFinal(movimentacao.getEntrada(), movimentacao.getSaida(), precoPorHora);
-		
+
+		Double valorFinal = calcularValorFinal(movimentacao.getEntrada(), movimentacao.getSaida(), movimentacao.getServico().getPrecoPorHora());
+
 		movimentacao.setValor(valorFinal);
-		
-//		Calendar entrada = movimentacao.getEntrada();
-//		Calendar saida = Calendar.getInstance();
-//		movimentacao.setSaida(saida);
+
 		return movimentacaoRepository.save(movimentacao);
 	}
-	
+
 	public Double calcularValorFinal(LocalDateTime entrada, LocalDateTime saida, Double precoPorHora) {
-		Calendar duracao = Calendar.getInstance();
-		Long entradaMillis = entrada.toEpochSecond(ZoneOffset.UTC);
-		Long saidaMillis = saida.toEpochSecond(ZoneOffset.UTC);
-		System.out.println(entrada);
-		System.out.println(saida);
-		
-		duracao.setTimeInMillis(saidaMillis - entradaMillis);
-		
-		Double valorPorMinuto = precoPorHora / 60;
-		Double tempoEmMinutos = (double) (duracao.getTimeInMillis() / 1000 / 60);
-		Double valorFinal = tempoEmMinutos * valorPorMinuto; 
-		System.out.println(valorFinal);
+		long duracao = entrada.until(saida, ChronoUnit.MINUTES);
+		Double valorFinal = duracao * (precoPorHora / 60);
 		return valorFinal;
 	}
-	
-//	public calculaDuracao() {
-//		Calendar entrada = Calendar.getInstance();
-//		entrada.set(2020, 11, 6, 10, 30);
-//		
-//		Calendar saida = Calendar.getInstance();
-//		saida.set(2020, 11, 6, 11, 00);
-//		TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-//		Calendar duracao = Calendar.getInstance();
-//		duracao.setTimeInMillis(saida.getTimeInMillis() - entrada.getTimeInMillis());
-//
-////		
-////
-//	System.out.println("entrada: " + entrada.getTime());
-//	System.out.println("saida: " + saida.getTime());
-//	System.out.println("duracao: " + (duracao.getTimeInMillis() / 1000 / 60 ));
-//	}
 
-//	public MovimentacaoServiceImpl(MovimentacaoRepository movimentacaoRepository) {
-//		this.movimentacaoRepository = movimentacaoRepository;
-//	}
-//	
-//	@Autowired
-//	private FuncionarioRepository funcionarioRepository;
-//
-//	public CargoServiceImpl(CargoRepository cargoRepository) {
-//		this.cargoRepository = cargoRepository;
-//	}
-//
 //	@Override
 //	public CargoDto cadastrar(CargoDto cargoDto) {
 //		

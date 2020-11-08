@@ -2,8 +2,6 @@ package br.com.projeto.estacioneaqui.services;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Service;
 
 import br.com.projeto.estacioneaqui.models.Movimentacao;
@@ -15,14 +13,12 @@ public interface MovimentacaoService {
 	List<Movimentacao> listar();
 
 	Movimentacao detalhar(Long id);
-
-	Movimentacao atualizar(Long id, Movimentacao alteracao);
 	
 	Boolean movimentacaoExiste(Long id);
 
 	Boolean remover(Long id);
 
-	Movimentacao cadastrar(@Valid Movimentacao movimentacao);
+	Movimentacao cadastrar(Movimentacao movimentacao);
 
 	Movimentacao converter(CheckinForm form);
 
