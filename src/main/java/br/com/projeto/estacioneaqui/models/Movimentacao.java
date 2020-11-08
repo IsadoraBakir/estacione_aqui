@@ -1,7 +1,6 @@
 package br.com.projeto.estacioneaqui.models;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,22 +30,22 @@ public class Movimentacao {
 	@ManyToOne
 	@JoinColumn(name = "vaga_id", nullable = false)
 	private Vaga vaga;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "servico_id", nullable = false)
 	private Servico servico;
 
 	@Column(name = "entrada", nullable = false)
-	private Date entrada;
+	private LocalDateTime entrada;
 
 	@Column(name = "saida")
-	private Date saida;
+	private LocalDateTime saida;
 
 	@Column(name = "valor")
 	private Double valor;
-	
+
 	public Movimentacao() {
-		
+
 	}
 
 	public Movimentacao(Cliente cliente, Veiculo veiculo, Vaga vaga, Servico servico) {
@@ -54,15 +53,15 @@ public class Movimentacao {
 		this.veiculo = veiculo;
 		this.vaga = vaga;
 		this.servico = servico;
-		this.entrada = Calendar.getInstance().getTime();
+		this.entrada = LocalDateTime.now();
 		this.valor = 0.0;
 	}
-	
+
 //	public Movimentacao(Double valorFinal) {
-//		this.saida = Calendar.getInstance().getTime();
+//		this.saida = LocalDateTime.getInstance().getTime();
 //		this.valor = valorFinal;
 //	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -96,19 +95,27 @@ public class Movimentacao {
 		this.vaga = vaga;
 	}
 
-	public Date getEntrada() {
+	public Servico getServico() {
+		return servico;
+	}
+
+	public void setServico(Servico servico) {
+		this.servico = servico;
+	}
+
+	public LocalDateTime getEntrada() {
 		return entrada;
 	}
 
-	public void setEntrada(Date entrada) {
+	public void setEntrada(LocalDateTime entrada) {
 		this.entrada = entrada;
 	}
 
-	public Date getSaida() {
+	public LocalDateTime getSaida() {
 		return saida;
 	}
 
-	public void setSaida(Date saida) {
+	public void setSaida(LocalDateTime saida) {
 		this.saida = saida;
 	}
 

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.projeto.estacioneaqui.models.Movimentacao;
 import br.com.projeto.estacioneaqui.models.form.CheckinForm;
-import br.com.projeto.estacioneaqui.models.form.CheckoutForm;
 import br.com.projeto.estacioneaqui.responses.Response;
 import br.com.projeto.estacioneaqui.services.MovimentacaoService;
 
@@ -47,19 +45,19 @@ public class MovimentacaoController {
 		return ResponseEntity.ok().body(response);
 	}
 	
-	@PutMapping("/atualizar/{id}")
-	public Movimentacao atualizar(@PathVariable Long id, @RequestBody Movimentacao alteracao) {
+	@PutMapping("/editar/{id}")
+	public Movimentacao editar(@PathVariable Long id, @RequestBody Movimentacao alteracao) {
 		return movimentacaoService.atualizar(id, alteracao);
 	}
 	
-//	@PatchMapping("/checkout/{id}")
-//	public Movimentacao checkout(@PathVariable("id") Long id) {
-//		
-//		Movimentacao movimentacao = movimentacaoService.checkout(id);
-//		
-//		return movimentacao;
-//		
-//	}
+	@PutMapping("/checkout/{id}")
+	public Movimentacao checkout(@PathVariable("id") Long id) {
+		Response<Movimentacao> response = new Response<>();
+		Movimentacao movimentacao = movimentacaoService.detalhar(id);
+		movimentacaoService.checkout(movimentacao);
+		response.setData(movimentacao);
+		return movimentacao;
+	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> remover(@PathVariable Long id) {
@@ -82,9 +80,7 @@ public class MovimentacaoController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		
-		Movimentacao movimentacao = movimentacaoService.converter(movimentacaoForm);
-
-		Movimentacao movimentacaoCadastrada = movimentacaoService.cadastrar(movimentacao);
+		Movimentacao movimentacaoCadastrada = movimentacaoService.converter(movimentacaoForm);
 
 		URI uri = uriBuilder.path("/movimentacao/{id}").buildAndExpand(movimentacaoCadastrada.getId()).toUri();
 

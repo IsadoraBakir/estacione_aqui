@@ -18,12 +18,12 @@ public interface MovimentacaoService {
 
 	Movimentacao atualizar(Long id, Movimentacao alteracao);
 
-	boolean remover(Long id);
+	Boolean remover(Long id);
 
 	Movimentacao cadastrar(@Valid Movimentacao movimentacao);
 
 	Movimentacao converter(CheckinForm form);
 
-//	Movimentacao checkout(Long id);
+	Movimentacao checkout(Movimentacao movimentacao);
 
 }

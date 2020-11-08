@@ -14,6 +14,8 @@ public class EstacioneAquiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EstacioneAquiApplication.class, args);
 		
+		System.out.println(Calendar.getInstance().getTime());
+		
 		
 ////	System.out.println("diferenca: " + ((entrada.getTimeInMillis() - saida.getTimeInMillis())));		
 //		

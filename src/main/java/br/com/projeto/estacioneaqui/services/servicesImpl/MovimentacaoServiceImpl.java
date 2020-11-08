@@ -1,7 +1,12 @@
 package br.com.projeto.estacioneaqui.services.servicesImpl;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +43,6 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	
 	@Autowired
 	private ServicoService servicoService;
-	
-	private Object saida;
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
@@ -56,13 +59,12 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	@Override
 	@Transactional
 	public Movimentacao cadastrar(Movimentacao movimentacao) {
-		
 		return movimentacaoRepository.save(movimentacao);
 	}
 
 	@Override
 	@Transactional
-	public boolean remover(Long id) {
+	public Boolean remover(Long id) {
 
 		Optional<Movimentacao> movimentacao = movimentacaoRepository.findById(id);
 
@@ -91,20 +93,49 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		Vaga vaga = vagaService.findById(form.getVagaId());
 		Servico servico = servicoService.findById(form.getServicoId());
 		
+		Movimentacao movimentacao = new Movimentacao(cliente, veiculo, vaga, servico);
+
+		List<Veiculo> veiculos = new ArrayList<>();
+		veiculos.add(veiculo);
+		cliente.setVeiculo(veiculos);
 		
-		
-		return new Movimentacao(cliente, veiculo, vaga, servico);
+		return cadastrar(movimentacao);
 	}
 	
-//	@Override
-//	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-//	public Movimentacao checkout(Long id) {
-//		Movimentacao movimentacao = detalhar(id);
+	@Override
+	@Transactional
+	public Movimentacao checkout(Movimentacao movimentacao) {
+		
+		movimentacao.getEntrada();
+		movimentacao.setSaida(LocalDateTime.now());
+		
+		Double precoPorHora = movimentacao.getServico().getPrecoPorHora();
+		
+		Double valorFinal = calcularValorFinal(movimentacao.getEntrada(), movimentacao.getSaida(), precoPorHora);
+		
+		movimentacao.setValor(valorFinal);
+		
 //		Calendar entrada = movimentacao.getEntrada();
 //		Calendar saida = Calendar.getInstance();
 //		movimentacao.setSaida(saida);
-//		return null;
-//	}
+		return movimentacaoRepository.save(movimentacao);
+	}
+	
+	public Double calcularValorFinal(LocalDateTime entrada, LocalDateTime saida, Double precoPorHora) {
+		Calendar duracao = Calendar.getInstance();
+		Long entradaMillis = entrada.toEpochSecond(ZoneOffset.UTC);
+		Long saidaMillis = saida.toEpochSecond(ZoneOffset.UTC);
+		System.out.println(entrada);
+		System.out.println(saida);
+		
+		duracao.setTimeInMillis(saidaMillis - entradaMillis);
+		
+		Double valorPorMinuto = precoPorHora / 60;
+		Double tempoEmMinutos = (double) (duracao.getTimeInMillis() / 1000 / 60);
+		Double valorFinal = tempoEmMinutos * valorPorMinuto; 
+		System.out.println(valorFinal);
+		return valorFinal;
+	}
 	
 //	public calculaDuracao() {
 //		Calendar entrada = Calendar.getInstance();
