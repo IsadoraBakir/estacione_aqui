@@ -31,6 +31,18 @@ public class ServicoServiceImpl implements ServicoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public Boolean servicoExiste(Long id) {
+
+		Optional<Servico> servico = servicoRepository.findById(id);
+
+		if (servico.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	@Transactional
 	public Servico atualizar(Long id, Servico alteracao) {
 

@@ -37,6 +37,18 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public Boolean clienteExiste(Long id) {
+
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+
+		if (cliente.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	@Transactional
 	public Cliente atualizar(Long id, Cliente alteracao) {
 

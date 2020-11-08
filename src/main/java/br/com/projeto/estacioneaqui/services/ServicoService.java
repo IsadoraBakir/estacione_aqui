@@ -16,6 +16,8 @@ public interface ServicoService {
 	Servico detalhar(Long id);
 
 	Servico atualizar(Long id, Servico alteracao);
+	
+	Boolean servicoExiste(Long id);
 
 	boolean remover(Long id);
 

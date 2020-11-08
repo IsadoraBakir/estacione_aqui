@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.projeto.estacioneaqui.models.Movimentacao;
 import br.com.projeto.estacioneaqui.models.Veiculo;
 import br.com.projeto.estacioneaqui.repositories.VeiculoRepository;
 import br.com.projeto.estacioneaqui.services.VeiculoService;

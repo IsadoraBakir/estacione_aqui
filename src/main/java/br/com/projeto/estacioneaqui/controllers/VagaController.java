@@ -30,53 +30,81 @@ public class VagaController {
 	@Autowired
 	private VagaService vagaService;
 
-	@GetMapping
-	public ResponseEntity<List<Vaga>> listar() {
-		List<Vaga> vagas = vagaService.listar();
-		return ResponseEntity.ok().body(vagas);
-	}
-
-	@GetMapping("/{id}")
-	public ResponseEntity<Response<Vaga>> detalhar(@PathVariable("id") Long id) {
-		Response<Vaga> response = new Response<>();
-		Vaga vaga = vagaService.detalhar(id);
-		response.setData(vaga);
-		return ResponseEntity.ok().body(response);
-	}
-	
-	@PutMapping("/atualizar/{id}")
-	public Vaga atualizar(@PathVariable Long id, @RequestBody Vaga alteracao) {
-		return vagaService.atualizar(id, alteracao);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean vaga = vagaService.remover(id);
-		if (vaga) {
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Vaga>> cadastrar(@RequestBody @Valid Vaga vaga, UriComponentsBuilder uriBuilder,
-			BindingResult result) {
+	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<Vaga>> cadastrar(@RequestBody @Valid Vaga vaga,
+			UriComponentsBuilder uriBuilder, BindingResult result) {
 
 		Response<Vaga> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
+
 			return ResponseEntity.badRequest().body(response);
+
+		} else {
+			Vaga vagaCadastrado = vagaService.cadastrar(vaga);
+
+			URI uri = uriBuilder.path("/vaga/{id}").buildAndExpand(vagaCadastrado.getId()).toUri();
+
+			response.setData(vagaCadastrado);
+
+			return ResponseEntity.created(uri).body(response);
 		}
 
-		Vaga vagaCadastrada = vagaService.cadastrar(vaga);
-
-		URI uri = uriBuilder.path("/vaga/{id}").buildAndExpand(vagaCadastrada.getId()).toUri();
-
-		response.setData(vagaCadastrada);
-
-		return ResponseEntity.created(uri).body(response);
 	}
 
+	@GetMapping
+	public ResponseEntity<List<Vaga>> listar() {
+		List<Vaga> vagas = vagaService.listar();
+
+		if (vagas.size() == 0) {
+			return ResponseEntity.notFound().build();
+
+		} else {
+			return ResponseEntity.ok().body(vagas);
+		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Response<Vaga>> detalhar(@PathVariable("id") Long id) {
+
+		Response<Vaga> response = new Response<>();
+
+		if (vagaService.vagaExiste(id)) {
+
+			Vaga vaga = vagaService.detalhar(id);
+			response.setData(vaga);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@PutMapping("/atualizar/{id}")
+	public ResponseEntity<Response<Vaga>> atualizar(@PathVariable Long id, @RequestBody Vaga alteracao) {
+
+		Response<Vaga> response = new Response<>();
+
+		if (vagaService.vagaExiste(id)) {
+
+			Vaga vaga = vagaService.atualizar(id, alteracao);
+			response.setData(vaga);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+
+		if (vagaService.remover(id)) {
+			return ResponseEntity.ok().build();
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

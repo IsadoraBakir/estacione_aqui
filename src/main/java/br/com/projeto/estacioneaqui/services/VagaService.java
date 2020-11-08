@@ -15,11 +15,11 @@ public interface VagaService {
 	
 	Vaga detalhar(Long id);
 	
+	Boolean vagaExiste(Long id);
+	
 	boolean remover(Long id);
 	
 	Vaga atualizar(Long id, Vaga alteracao);
-//	CargoDto cadastrar(CargoDto cargo);
-//	
 
 	Vaga findById(Long id);
 }

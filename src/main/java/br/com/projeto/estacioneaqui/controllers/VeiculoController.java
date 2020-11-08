@@ -40,7 +40,7 @@ public class VeiculoController {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
 
 			return ResponseEntity.badRequest().body(response);
-
+			
 		} else {
 			Veiculo veiculoCadastrado = veiculoService.cadastrar(veiculo);
 

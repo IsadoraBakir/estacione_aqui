@@ -15,10 +15,12 @@ public interface ClienteService {
 
 	Cliente detalhar(Long id);
 
+	Boolean clienteExiste(Long id);
+
 	Cliente atualizar(Long id, Cliente alteracao);
 
 	boolean remover(Long id);
 
 	Cliente findById(Long id);
-	
+
 }

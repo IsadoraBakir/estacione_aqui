@@ -29,52 +29,82 @@ public class ClienteController {
 
 	@Autowired
 	private ClienteService clienteService;
-	
-	@GetMapping
-	public ResponseEntity<List<Cliente>> listar() {
-		List<Cliente> clientes = clienteService.listar();
-		return ResponseEntity.ok().body(clientes);
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Response<Cliente>> detalhar(@PathVariable("id") Long id) {
-		Response<Cliente> response = new Response<>();
-		Cliente cliente = clienteService.detalhar(id);
-		response.setData(cliente);
-		return ResponseEntity.ok().body(response);
-	}
-	
-	@PutMapping("/atualizar/{id}")
-	public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente alteracao) {
-		return clienteService.atualizar(id, alteracao);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean cliente = clienteService.remover(id);
-		if (cliente) {
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
-	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Cliente>> cadastrar(@RequestBody @Valid Cliente cliente, UriComponentsBuilder uriBuilder,
-			BindingResult result) {
+
+	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<Cliente>> cadastrar(@RequestBody @Valid Cliente cliente,
+			UriComponentsBuilder uriBuilder, BindingResult result) {
+
 		Response<Cliente> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
+
 			return ResponseEntity.badRequest().body(response);
+			
+		} else {
+			Cliente clienteCadastrado = clienteService.cadastrar(cliente);
+
+			URI uri = uriBuilder.path("/cliente/{id}").buildAndExpand(clienteCadastrado.getId()).toUri();
+
+			response.setData(clienteCadastrado);
+
+			return ResponseEntity.created(uri).body(response);
 		}
 
-		Cliente clienteCadastrado = clienteService.cadastrar(cliente);
+	}
 
-		URI uri = uriBuilder.path("/cliente/{id}").buildAndExpand(clienteCadastrado.getId()).toUri();
+	@GetMapping
+	public ResponseEntity<List<Cliente>> listar() {
+		List<Cliente> clientes = clienteService.listar();
 
-		response.setData(clienteCadastrado);
+		if (clientes.size() == 0) {
+			return ResponseEntity.notFound().build();
 
-		return ResponseEntity.created(uri).body(response);
+		} else {
+			return ResponseEntity.ok().body(clientes);
+		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Response<Cliente>> detalhar(@PathVariable("id") Long id) {
+
+		Response<Cliente> response = new Response<>();
+
+		if (clienteService.clienteExiste(id)) {
+
+			Cliente cliente = clienteService.detalhar(id);
+			response.setData(cliente);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@PutMapping("/atualizar/{id}")
+	public ResponseEntity<Response<Cliente>> atualizar(@PathVariable Long id, @RequestBody Cliente alteracao) {
+
+		Response<Cliente> response = new Response<>();
+
+		if (clienteService.clienteExiste(id)) {
+
+			Cliente cliente = clienteService.atualizar(id, alteracao);
+			response.setData(cliente);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+
+		if (clienteService.remover(id)) {
+			return ResponseEntity.ok().build();
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
