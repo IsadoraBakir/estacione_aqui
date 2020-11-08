@@ -1,14 +1,10 @@
 package br.com.projeto.estacioneaqui.models;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -25,17 +21,17 @@ public class Cliente {
 	@Column(name = "nome", nullable = false)
 	private String nome;
 
-	@Column(name = "cpf", nullable = false)
+	@Column(name = "cpf", nullable = false, unique = true)
 	private String cpf;
 
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
-	
-	@ManyToMany(mappedBy = "clientes", fetch = FetchType.EAGER)
-	private List<Veiculo> veiculo;
-	
-//	@OneToMany(mappedBy = "cliente")
-//	private List<Movimentacao> movimentacoes;
+//	
+//	@ManyToMany(mappedBy = "clientes", fetch = FetchType.EAGER)
+//	private List<Veiculo> veiculo;
+//	
+////	@OneToMany(mappedBy = "cliente")
+////	private List<Movimentacao> movimentacoes;
 
 	public Long getId() {
 		return id;
@@ -54,7 +50,7 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	@NotNull(message = "Digite CPF somente com números")
+	@NotNull(message = "CPF é obrigatório e possui 11 digitos")
 	@Length(min = 11)
 	public String getCpf() {
 		return cpf;
@@ -74,12 +70,12 @@ public class Cliente {
 		this.telefone = telefone;
 	}
 
-	public List<Veiculo> getVeiculo() {
-		return veiculo;
-	}
-
-	public void setVeiculo(List<Veiculo> veiculo) {
-		this.veiculo = veiculo;
-	}
+//	public List<Veiculo> getVeiculo() {
+//		return veiculo;
+//	}
+//
+//	public void setVeiculo(List<Veiculo> veiculo) {
+//		this.veiculo = veiculo;
+//	}
 
 }

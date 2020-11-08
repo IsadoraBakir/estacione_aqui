@@ -17,6 +17,8 @@ public interface MovimentacaoService {
 	Movimentacao detalhar(Long id);
 
 	Movimentacao atualizar(Long id, Movimentacao alteracao);
+	
+	Boolean movimentacaoExiste(Long id);
 
 	Boolean remover(Long id);
 

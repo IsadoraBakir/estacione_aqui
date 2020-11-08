@@ -31,62 +31,80 @@ public class MovimentacaoController {
 	@Autowired
 	private MovimentacaoService movimentacaoService;
 
+	@PostMapping(path = "/checkin", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<Movimentacao>> checkin(@RequestBody @Valid CheckinForm checkinForm,
+			UriComponentsBuilder uriBuilder, BindingResult result) {
+
+		Movimentacao movimentacaoCadastrada = movimentacaoService.converter(checkinForm);
+		Response<Movimentacao> response = new Response<>();
+
+		if (result.hasErrors()) {
+
+			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
+			return ResponseEntity.badRequest().body(response);
+
+		} else {
+
+			URI uri = uriBuilder.path("/movimentacao/{id}").buildAndExpand(movimentacaoCadastrada.getId()).toUri();
+			response.setData(movimentacaoCadastrada);
+			return ResponseEntity.created(uri).body(response);
+		}
+	}
+
 	@GetMapping
 	public ResponseEntity<List<Movimentacao>> listar() {
+		
 		List<Movimentacao> movimentacoes = movimentacaoService.listar();
-		return ResponseEntity.ok().body(movimentacoes);
+		
+		if (movimentacoes.size() == 0) {
+			return ResponseEntity.notFound().build();
+			
+		} else {
+			return ResponseEntity.ok().body(movimentacoes);
+		}
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Response<Movimentacao>> detalhar(@PathVariable("id") Long id) {
+		
 		Response<Movimentacao> response = new Response<>();
-		Movimentacao movimentacao = movimentacaoService.detalhar(id);
-		response.setData(movimentacao);
-		return ResponseEntity.ok().body(response);
-	}
-	
-	@PutMapping("/editar/{id}")
-	public Movimentacao editar(@PathVariable Long id, @RequestBody Movimentacao alteracao) {
-		return movimentacaoService.atualizar(id, alteracao);
-	}
-	
-	@PutMapping("/checkout/{id}")
-	public Movimentacao checkout(@PathVariable("id") Long id) {
-		Response<Movimentacao> response = new Response<>();
-		Movimentacao movimentacao = movimentacaoService.detalhar(id);
-		movimentacaoService.checkout(movimentacao);
-		response.setData(movimentacao);
-		return movimentacao;
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean movimentacao = movimentacaoService.remover(id);
-		if (movimentacao) {
-			return ResponseEntity.ok().build();
+		
+		if(movimentacaoService.movimentacaoExiste(id)) {
+			
+			Movimentacao movimentacao = movimentacaoService.detalhar(id);
+			response.setData(movimentacao);
+			return ResponseEntity.ok().body(response);
+			
 		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
 
-	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Movimentacao>> cadastrar(@RequestBody @Valid CheckinForm movimentacaoForm, UriComponentsBuilder uriBuilder,
-			BindingResult result) {
-
-		Response<Movimentacao> response = new Response<>();
-
-		if (result.hasErrors()) {
-			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
-			return ResponseEntity.badRequest().body(response);
-		}
+	@PutMapping("/checkout/{id}")
+	public ResponseEntity<Response<Movimentacao>> checkout(@PathVariable("id") Long id) {
 		
-		Movimentacao movimentacaoCadastrada = movimentacaoService.converter(movimentacaoForm);
+		Response<Movimentacao> response = new Response<>();
+		
+		if(movimentacaoService.movimentacaoExiste(id)) {
+			
+			Movimentacao movimentacao = movimentacaoService.detalhar(id);
+			movimentacaoService.checkout(movimentacao);
+			response.setData(movimentacao);
+			return ResponseEntity.ok().body(response);
+			
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-		URI uri = uriBuilder.path("/movimentacao/{id}").buildAndExpand(movimentacaoCadastrada.getId()).toUri();
-
-		response.setData(movimentacaoCadastrada);
-
-		return ResponseEntity.created(uri).body(response);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+		
+		if (movimentacaoService.remover(id)) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

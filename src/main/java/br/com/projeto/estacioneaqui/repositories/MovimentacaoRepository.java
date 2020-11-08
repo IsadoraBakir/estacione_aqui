@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.com.projeto.estacioneaqui.models.Movimentacao;
-import br.com.projeto.estacioneaqui.models.Servico;
-import br.com.projeto.estacioneaqui.models.Vaga;
-import br.com.projeto.estacioneaqui.models.Veiculo;
 
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long>{

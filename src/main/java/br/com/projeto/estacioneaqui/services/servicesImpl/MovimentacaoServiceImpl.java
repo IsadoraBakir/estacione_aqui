@@ -2,11 +2,9 @@ package br.com.projeto.estacioneaqui.services.servicesImpl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +53,18 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	public Movimentacao detalhar(Long id) {
 		return movimentacaoRepository.findById(id).get();
 	}
+	
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public Boolean movimentacaoExiste(Long id) {
+		
+		Optional<Movimentacao> movimentacao = movimentacaoRepository.findById(id);
+		
+		if (movimentacao.isPresent()) {
+			return true;
+		} 
+			return false;
+	}
 
 	@Override
 	@Transactional
@@ -95,9 +105,9 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		
 		Movimentacao movimentacao = new Movimentacao(cliente, veiculo, vaga, servico);
 
-		List<Veiculo> veiculos = new ArrayList<>();
-		veiculos.add(veiculo);
-		cliente.setVeiculo(veiculos);
+//		List<Veiculo> veiculos = new ArrayList<>();
+//		veiculos.add(veiculo);
+//		cliente.setVeiculo(veiculos);
 		
 		return cadastrar(movimentacao);
 	}
