@@ -1,9 +1,7 @@
 package br.com.projeto.estacioneaqui.services.servicesImpl;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,25 +116,4 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		Double valorFinal = duracao * (precoPorHora / 60);
 		return valorFinal;
 	}
-
-//	@Override
-//	public CargoDto cadastrar(CargoDto cargoDto) {
-//		
-//		Cargo cargo = new Cargo();
-//		Funcionario funcionario = new Funcionario();
-//		funcionario = funcionarioRepository.findByCpf(cargoDto.getCpf());
-//		cargo.setDescricao(cargoDto.getDescricao());
-//		cargo.setSalario(Double.parseDouble(cargoDto.getSalario()));
-//		List<Funcionario> funcionarios = new ArrayList<>();
-//		funcionarios.add(funcionario);
-//		cargo.setFuncionarios(funcionarios);
-//		cargo = cargoRepository.save(cargo);
-//		cargoDto.setCpf(cargo.getFuncionarios().get(0).getCpf());
-//		cargoDto.setId(cargo.getId().toString());
-//		cargoDto.setDescricao(cargo.getDescricao());
-//		cargoDto.setSalario(cargo.getSalario().toString());
-//		
-//		return cargoDto;
-//	}
-//
 }

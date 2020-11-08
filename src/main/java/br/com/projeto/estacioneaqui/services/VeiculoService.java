@@ -15,10 +15,12 @@ public interface VeiculoService {
 
 	Veiculo detalhar(Long id);
 
+	Boolean veiculoExiste(Long id);
+
 	Veiculo atualizar(Long id, Veiculo alteracao);
 
 	boolean remover(Long id);
 
 	Veiculo findById(Long id);
-	
+
 }

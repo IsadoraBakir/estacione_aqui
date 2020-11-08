@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.projeto.estacioneaqui.models.Movimentacao;
 import br.com.projeto.estacioneaqui.models.Veiculo;
 import br.com.projeto.estacioneaqui.repositories.VeiculoRepository;
 import br.com.projeto.estacioneaqui.services.VeiculoService;
@@ -36,6 +37,18 @@ public class VeiculoServiceImpl implements VeiculoService {
 		return veiculoRepository.findById(id).get();
 	}
 
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public Boolean veiculoExiste(Long id) {
+
+		Optional<Veiculo> veiculo = veiculoRepository.findById(id);
+
+		if (veiculo.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	@Transactional
 	public Veiculo atualizar(Long id, Veiculo alteracao) {

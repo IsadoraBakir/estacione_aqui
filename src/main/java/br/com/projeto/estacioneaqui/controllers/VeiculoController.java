@@ -29,52 +29,82 @@ public class VeiculoController {
 
 	@Autowired
 	private VeiculoService veiculoService;
-	
-	@GetMapping
-	public ResponseEntity<List<Veiculo>> listar() {
-		List<Veiculo> veiculos = veiculoService.listar();
-		return ResponseEntity.ok().body(veiculos);
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Response<Veiculo>> detalhar(@PathVariable("id") Long id) {
-		Response<Veiculo> response = new Response<>();
-		Veiculo veiculo = veiculoService.detalhar(id);
-		response.setData(veiculo);
-		return ResponseEntity.ok().body(response);
-	}
-	
-	@PutMapping("/atualizar/{id}")
-	public Veiculo atualizar(@PathVariable Long id, @RequestBody Veiculo alteracao) {
-		return veiculoService.atualizar(id, alteracao);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> remover(@PathVariable Long id) {
-		boolean veiculo = veiculoService.remover(id);
-		if (veiculo) {
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
-	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Response<Veiculo>> cadastrar(@RequestBody @Valid Veiculo veiculo, UriComponentsBuilder uriBuilder,
-			BindingResult result) {
+
+	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Response<Veiculo>> cadastrar(@RequestBody @Valid Veiculo veiculo,
+			UriComponentsBuilder uriBuilder, BindingResult result) {
+
 		Response<Veiculo> response = new Response<>();
 
 		if (result.hasErrors()) {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
+
 			return ResponseEntity.badRequest().body(response);
+
+		} else {
+			Veiculo veiculoCadastrado = veiculoService.cadastrar(veiculo);
+
+			URI uri = uriBuilder.path("/veiculo/{id}").buildAndExpand(veiculoCadastrado.getId()).toUri();
+
+			response.setData(veiculoCadastrado);
+
+			return ResponseEntity.created(uri).body(response);
 		}
 
-		Veiculo veiculoCadastrado = veiculoService.cadastrar(veiculo);
+	}
 
-		URI uri = uriBuilder.path("/veiculo/{id}").buildAndExpand(veiculoCadastrado.getId()).toUri();
+	@GetMapping
+	public ResponseEntity<List<Veiculo>> listar() {
+		List<Veiculo> veiculos = veiculoService.listar();
 
-		response.setData(veiculoCadastrado);
+		if (veiculos.size() == 0) {
+			return ResponseEntity.notFound().build();
 
-		return ResponseEntity.created(uri).body(response);
+		} else {
+			return ResponseEntity.ok().body(veiculos);
+		}
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Response<Veiculo>> detalhar(@PathVariable("id") Long id) {
+
+		Response<Veiculo> response = new Response<>();
+
+		if (veiculoService.veiculoExiste(id)) {
+
+			Veiculo veiculo = veiculoService.detalhar(id);
+			response.setData(veiculo);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@PutMapping("/atualizar/{id}")
+	public ResponseEntity<Response<Veiculo>> atualizar(@PathVariable Long id, @RequestBody Veiculo alteracao) {
+
+		Response<Veiculo> response = new Response<>();
+
+		if (veiculoService.veiculoExiste(id)) {
+
+			Veiculo veiculo = veiculoService.atualizar(id, alteracao);
+			response.setData(veiculo);
+			return ResponseEntity.ok().body(response);
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+
+		if (veiculoService.remover(id)) {
+			return ResponseEntity.ok().build();
+
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

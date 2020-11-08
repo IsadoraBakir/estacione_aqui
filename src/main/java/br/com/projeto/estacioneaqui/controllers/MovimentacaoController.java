@@ -31,7 +31,7 @@ public class MovimentacaoController {
 	@Autowired
 	private MovimentacaoService movimentacaoService;
 
-	@PostMapping(path = "/checkin", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/checkin", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<Movimentacao>> checkin(@RequestBody @Valid CheckinForm checkinForm,
 			UriComponentsBuilder uriBuilder, BindingResult result) {
 
@@ -39,14 +39,15 @@ public class MovimentacaoController {
 		Response<Movimentacao> response = new Response<>();
 
 		if (result.hasErrors()) {
-
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
+			
 			return ResponseEntity.badRequest().body(response);
 
 		} else {
-
 			URI uri = uriBuilder.path("/movimentacao/{id}").buildAndExpand(movimentacaoCadastrada.getId()).toUri();
+			
 			response.setData(movimentacaoCadastrada);
+			
 			return ResponseEntity.created(uri).body(response);
 		}
 	}
@@ -102,6 +103,7 @@ public class MovimentacaoController {
 		
 		if (movimentacaoService.remover(id)) {
 			return ResponseEntity.ok().build();
+			
 		} else {
 			return ResponseEntity.notFound().build();
 		}
