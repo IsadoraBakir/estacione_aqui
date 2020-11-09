@@ -30,7 +30,7 @@ public class VagaController {
 	@Autowired
 	private VagaService vagaService;
 
-	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<Vaga>> cadastrar(@RequestBody @Valid Vaga vaga,
 			UriComponentsBuilder uriBuilder, BindingResult result) {
 

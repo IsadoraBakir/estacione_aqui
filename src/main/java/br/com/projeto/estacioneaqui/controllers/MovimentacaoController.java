@@ -31,7 +31,7 @@ public class MovimentacaoController {
 	@Autowired
 	private MovimentacaoService movimentacaoService;
 
-	@PostMapping(path = "/checkin", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/checkin", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<Movimentacao>> checkin(@RequestBody @Valid CheckinForm checkinForm,
 			UriComponentsBuilder uriBuilder, BindingResult result) {
 

@@ -30,7 +30,7 @@ public class ClienteController {
 	@Autowired
 	private ClienteService clienteService;
 
-	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<Cliente>> cadastrar(@RequestBody @Valid Cliente cliente,
 			UriComponentsBuilder uriBuilder, BindingResult result) {
 

@@ -30,7 +30,7 @@ public class ServicoController {
 	@Autowired
 	private ServicoService servicoService;
 
-	@PostMapping(path = "/cadastrar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cadastrar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response<Servico>> cadastrar(@RequestBody @Valid Servico servico,
 			UriComponentsBuilder uriBuilder, BindingResult result) {
 
