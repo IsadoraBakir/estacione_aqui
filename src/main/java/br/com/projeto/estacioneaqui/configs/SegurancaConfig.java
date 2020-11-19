@@ -41,7 +41,8 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.csrf().disable()
+		.authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/cliente").permitAll()
 		.antMatchers(HttpMethod.GET, "/cliente/*").permitAll()
@@ -54,8 +55,8 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/veiculo").permitAll()
 		.antMatchers(HttpMethod.GET, "/veiculo/*").permitAll()
 		.anyRequest().authenticated()
-		.and().csrf().disable()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and().cors()
+		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
 	}
 }
