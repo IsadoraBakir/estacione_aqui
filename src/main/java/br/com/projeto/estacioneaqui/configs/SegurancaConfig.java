@@ -19,7 +19,7 @@ import br.com.projeto.estacioneaqui.repositories.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
