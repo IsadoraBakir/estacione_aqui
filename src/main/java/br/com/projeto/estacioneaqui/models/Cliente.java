@@ -26,12 +26,12 @@ public class Cliente {
 
 	@Column(name = "telefone", nullable = false)
 	private String telefone;
-//	
-//	@ManyToMany(mappedBy = "clientes", fetch = FetchType.EAGER)
-//	private List<Veiculo> veiculo;
-//	
-////	@OneToMany(mappedBy = "cliente")
-////	private List<Movimentacao> movimentacoes;
+
+	public Cliente(String nome, String cpf, String telefone) {
+		this.nome = nome;
+		this.cpf = cpf;
+		this.telefone = telefone;
+	}
 
 	public Long getId() {
 		return id;
@@ -69,13 +69,5 @@ public class Cliente {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-
-//	public List<Veiculo> getVeiculo() {
-//		return veiculo;
-//	}
-//
-//	public void setVeiculo(List<Veiculo> veiculo) {
-//		this.veiculo = veiculo;
-//	}
 
 }
