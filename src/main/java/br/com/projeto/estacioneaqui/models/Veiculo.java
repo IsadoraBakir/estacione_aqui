@@ -31,14 +31,7 @@ public class Veiculo {
 	@Lob
 	@Column(name = "observacoes")
 	private String observacoes;
-////
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	@JoinTable(name = "veiculos_clientes", joinColumns = { @JoinColumn(name = "veiculo_id") }, inverseJoinColumns = {
-//			@JoinColumn(name = "cliente_id") })
-//	private List<Cliente> clientes;
-	
-//	@OneToMany(mappedBy = "cliente")
-//	private List<Movimentacao> movimentacoes;
+
 
 	public Long getId() {
 		return id;

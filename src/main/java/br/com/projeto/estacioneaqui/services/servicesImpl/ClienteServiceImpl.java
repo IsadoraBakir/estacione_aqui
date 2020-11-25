@@ -73,6 +73,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Cliente findById(Long id) {
 		return clienteRepository.findById(id).get();
 	}

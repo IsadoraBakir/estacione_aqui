@@ -1,4 +1,4 @@
-package br.com.projeto.estacioneaqui.configs;
+package br.com.projeto.estacioneaqui.configs.seguranca;
 
 import java.io.IOException;
 
@@ -11,17 +11,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import br.com.projeto.estacioneaqui.configs.seguranca.services.TokenService;
 import br.com.projeto.estacioneaqui.models.Usuario;
-import br.com.projeto.estacioneaqui.repositories.UsuarioRepository;
+import br.com.projeto.estacioneaqui.services.UsuarioService;
 
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 	
 	private TokenService tokenService;
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService usuarioService;
 	
-	public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+	public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioService usuarioService) {
 		this.tokenService = tokenService;
-		this.usuarioRepository = usuarioRepository;
+		this.usuarioService = usuarioService;
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
 	private void autenticarUsuario(String token) {
 		Long idUsuario = tokenService.getIdUsuario(token);
-		Usuario usuario = usuarioRepository.findById(idUsuario).get();
+		Usuario usuario = usuarioService.detalhar(idUsuario);
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}

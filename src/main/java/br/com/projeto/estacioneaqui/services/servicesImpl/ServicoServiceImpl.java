@@ -81,6 +81,7 @@ public class ServicoServiceImpl implements ServicoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Servico findById(Long id) {
 		return servicoRepository.findById(id).get();
 	}

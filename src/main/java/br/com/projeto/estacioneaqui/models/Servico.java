@@ -17,9 +17,7 @@ public class Servico {
 	
 	@Column(name = "descricao")
 	private String descricao;
-//	
-//	@NotBlank
-//	@OneToMany(mappedBy = "servico")
+
 	@Column(name = "precoPorHora", nullable = false)
 	private double precoPorHora;
 	

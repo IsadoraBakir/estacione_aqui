@@ -1,4 +1,4 @@
-package br.com.projeto.estacioneaqui.configs;
+package br.com.projeto.estacioneaqui.configs.seguranca;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.projeto.estacioneaqui.repositories.UsuarioRepository;
+import br.com.projeto.estacioneaqui.configs.seguranca.services.AutenticacaoService;
+import br.com.projeto.estacioneaqui.configs.seguranca.services.TokenService;
+import br.com.projeto.estacioneaqui.services.UsuarioService;
 
 @EnableWebSecurity
 @Configuration
@@ -29,7 +31,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 	private TokenService tokenService;
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService usuarioService;
 	
 	@Override
 	@Bean
@@ -61,7 +63,7 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
 		.anyRequest().authenticated()
 		.and().cors()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+		.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioService), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override

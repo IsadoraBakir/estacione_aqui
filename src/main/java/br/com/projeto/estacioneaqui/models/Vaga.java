@@ -19,10 +19,6 @@ public class Vaga {
 	@Column(name = "localizacao", nullable = false, unique = true)
 	private String localizacao;
 	
-//	@OneToMany(mappedBy = "vaga")
-//	private List<Movimentacao> movimentacoes;
-	
-//	@NotNull(message = "Vaga não existe")
 	public Long getId() {
 		return id;
 	}

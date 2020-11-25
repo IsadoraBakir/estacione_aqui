@@ -71,6 +71,7 @@ public class VagaServiceImpl implements VagaService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Vaga findById(Long id) {
 		return vagaRepository.findById(id).get();
 	}

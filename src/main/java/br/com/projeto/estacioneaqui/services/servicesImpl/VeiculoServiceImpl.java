@@ -73,6 +73,7 @@ public class VeiculoServiceImpl implements VeiculoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Veiculo findById(Long id) {
 		return veiculoRepository.findById(id).get();
 	}

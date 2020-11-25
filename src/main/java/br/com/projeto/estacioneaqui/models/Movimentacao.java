@@ -57,11 +57,6 @@ public class Movimentacao {
 		this.valor = 0.0;
 	}
 
-//	public Movimentacao(Double valorFinal) {
-//		this.saida = LocalDateTime.getInstance().getTime();
-//		this.valor = valorFinal;
-//	}
-
 	public Long getId() {
 		return id;
 	}
@@ -86,7 +81,6 @@ public class Movimentacao {
 		this.veiculo = veiculo;
 	}
 
-//	@NotNull(message = "A vaga é uma informação obrigatória")
 	public Vaga getVaga() {
 		return vaga;
 	}

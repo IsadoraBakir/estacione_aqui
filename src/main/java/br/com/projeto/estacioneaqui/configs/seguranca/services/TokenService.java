@@ -1,4 +1,4 @@
-package br.com.projeto.estacioneaqui.configs;
+package br.com.projeto.estacioneaqui.configs.seguranca.services;
 
 import java.util.Date;
 

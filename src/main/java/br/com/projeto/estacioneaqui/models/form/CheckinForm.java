@@ -48,7 +48,4 @@ public class CheckinForm {
 		this.servicoId = servicoId;
 	}
 	
-//	public Movimentacao converter(MovimentacaoService movimentacaoService) {
-//		return movimentacaoService.converter();
-//	}
 }

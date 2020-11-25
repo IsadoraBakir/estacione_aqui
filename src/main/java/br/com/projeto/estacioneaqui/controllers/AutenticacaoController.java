@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.projeto.estacioneaqui.configs.TokenService;
+import br.com.projeto.estacioneaqui.configs.seguranca.services.TokenService;
 import br.com.projeto.estacioneaqui.models.TokenDto;
 import br.com.projeto.estacioneaqui.models.form.LoginForm;
 

@@ -1,4 +1,4 @@
-package br.com.projeto.estacioneaqui.configs;
+package br.com.projeto.estacioneaqui.configs.seguranca.services;
 
 import java.util.Optional;
 
@@ -9,18 +9,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.projeto.estacioneaqui.models.Usuario;
-import br.com.projeto.estacioneaqui.repositories.UsuarioRepository;
+import br.com.projeto.estacioneaqui.services.UsuarioService;
 
 @Service
 public class AutenticacaoService implements UserDetailsService {
 	
 	@Autowired
-	private UsuarioRepository repository;
+	private UsuarioService service;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		Optional<Usuario> usuario = repository.findByEmail(username);
+		Optional<Usuario> usuario = service.buscaPorEmail(username);
 		if (usuario.isPresent()) {
 			return usuario.get();
 		}
