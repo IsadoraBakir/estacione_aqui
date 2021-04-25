@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.projeto.estacioneaqui.models.Vaga;
+import br.com.projeto.estacioneaqui.models.enums.Status;
 import br.com.projeto.estacioneaqui.repositories.VagaRepository;
 import br.com.projeto.estacioneaqui.services.VagaService;
 
@@ -33,6 +34,7 @@ public class VagaServiceImpl implements VagaService {
 	@Override
 	@Transactional
 	public Vaga cadastrar(Vaga vaga) {
+		vaga.setStatus(Status.LIVRE);
 		return vagaRepository.save(vaga);
 	}
 

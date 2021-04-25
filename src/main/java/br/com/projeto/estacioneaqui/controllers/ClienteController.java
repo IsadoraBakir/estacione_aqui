@@ -40,7 +40,7 @@ public class ClienteController {
 			result.getAllErrors().stream().map(error -> response.getErrors().add(error.getDefaultMessage()));
 
 			return ResponseEntity.badRequest().body(response);
-			
+
 		} else {
 			Cliente clienteCadastrado = clienteService.cadastrar(cliente);
 
@@ -56,13 +56,7 @@ public class ClienteController {
 	@GetMapping
 	public ResponseEntity<List<Cliente>> listar() {
 		List<Cliente> clientes = clienteService.listar();
-
-		if (clientes.size() == 0) {
-			return ResponseEntity.notFound().build();
-
-		} else {
-			return ResponseEntity.ok().body(clientes);
-		}
+		return ResponseEntity.ok().body(clientes);
 	}
 
 	@GetMapping("/{id}")

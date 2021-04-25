@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import br.com.projeto.estacioneaqui.models.enums.Status;
+
 @Entity
 @Table(name = "vagas")
 public class Vaga {
@@ -18,6 +20,9 @@ public class Vaga {
 
 	@Column(name = "localizacao", nullable = false, unique = true)
 	private String localizacao;
+	
+	@Column(name = "status")
+	private Status status;
 	
 	public Long getId() {
 		return id;
@@ -34,6 +39,14 @@ public class Vaga {
 
 	public void setLocalizacao(String localizacao) {
 		this.localizacao = localizacao;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

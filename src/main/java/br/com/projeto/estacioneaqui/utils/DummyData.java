@@ -3,15 +3,19 @@ package br.com.projeto.estacioneaqui.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.projeto.estacioneaqui.models.Cliente;
 import br.com.projeto.estacioneaqui.models.Usuario;
 import br.com.projeto.estacioneaqui.models.Vaga;
+import br.com.projeto.estacioneaqui.models.Veiculo;
 import br.com.projeto.estacioneaqui.services.ClienteService;
 import br.com.projeto.estacioneaqui.services.UsuarioService;
 import br.com.projeto.estacioneaqui.services.VagaService;
+import br.com.projeto.estacioneaqui.services.VeiculoService;
 
 @Component
 public class DummyData {
@@ -19,10 +23,11 @@ public class DummyData {
 	@Autowired
 	VagaService vagaService;
 	
-	
 	@Autowired
 	ClienteService clienteService;
 	
+	@Autowired
+	VeiculoService veiculoService;
 	
 	@Autowired
 	UsuarioService usuarioService;
@@ -36,13 +41,17 @@ public class DummyData {
 		
 		List<Usuario> usuarios = new ArrayList<>();
 		
+		List<Veiculo> veiculos = new ArrayList<>();
+		
 		Vaga vaga1 = new Vaga();
 		vaga1.setLocalizacao("B10");
 		
-		Cliente cliente1 = new Cliente("Teste", "teste@email.com", "3199999999");
-		Cliente cliente2 = new Cliente("Teste 2", "teste2@email.com", "3122222222");
-		Cliente cliente3 = new Cliente("Teste 3", "teste3@email.com", "3133333333");
+		Cliente cliente1 = new Cliente("Teste", "12312312323", "3199999999");
+		Cliente cliente2 = new Cliente("Teste 2", "32132132111", "3122222222");
+		Cliente cliente3 = new Cliente("Teste 3", "31231231222", "3133333333");
 		
+		Veiculo veiculo1 = new Veiculo("Prata", "Palio", "Teste", "AAA-1111");
+		Veiculo veiculo2 = new Veiculo("Preto", "Fox", "Teste", "BBB-2222");
 		
 		Usuario usuario1 = new Usuario("Teste", "teste@email.com", "123123");
 		Usuario usuario2 = new Usuario("Teste 2", "teste2@email.com", "123456");
@@ -98,6 +107,9 @@ public class DummyData {
 		clientes.add(cliente2);
 		clientes.add(cliente3);
 		
+		veiculos.add(veiculo1);
+		veiculos.add(veiculo2);
+		
 		usuarios.add(usuario1);
 		usuarios.add(usuario2);
 		usuarios.add(usuario3);
@@ -108,7 +120,11 @@ public class DummyData {
 		
 		for (Cliente cliente : clientes) {
 			clienteService.cadastrar(cliente);
-		}		
+		}
+		
+		for (Veiculo veiculo : veiculos) {
+			veiculoService.cadastrar(veiculo);
+		}
 		
 		for (Usuario usuario : usuarios) {
 			usuarioService.cadastrar(usuario);

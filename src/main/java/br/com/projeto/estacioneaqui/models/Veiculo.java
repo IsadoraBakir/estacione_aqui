@@ -32,6 +32,15 @@ public class Veiculo {
 	@Column(name = "observacoes")
 	private String observacoes;
 
+	public Veiculo() {
+	}
+
+	public Veiculo(String cor, String modelo, String observacoes, String placa) {
+		this.cor = cor;
+		this.modelo = modelo;
+		this.observacoes = observacoes;
+		this.placa = placa;
+	}
 
 	public Long getId() {
 		return id;

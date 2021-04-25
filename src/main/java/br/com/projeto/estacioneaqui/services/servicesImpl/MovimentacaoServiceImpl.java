@@ -15,6 +15,7 @@ import br.com.projeto.estacioneaqui.models.Movimentacao;
 import br.com.projeto.estacioneaqui.models.Servico;
 import br.com.projeto.estacioneaqui.models.Vaga;
 import br.com.projeto.estacioneaqui.models.Veiculo;
+import br.com.projeto.estacioneaqui.models.enums.Status;
 import br.com.projeto.estacioneaqui.models.form.CheckinForm;
 import br.com.projeto.estacioneaqui.repositories.MovimentacaoRepository;
 import br.com.projeto.estacioneaqui.services.ClienteService;
@@ -68,6 +69,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 	@Override
 	@Transactional
 	public Movimentacao cadastrar(Movimentacao movimentacao) {
+		movimentacao.getVaga().setStatus(Status.OCUPADA);
+		
 		return movimentacaoRepository.save(movimentacao);
 	}
 
@@ -107,6 +110,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 		Double valorFinal = calcularValorFinal(movimentacao.getEntrada(), movimentacao.getSaida(), movimentacao.getServico().getPrecoPorHora());
 
 		movimentacao.setValor(valorFinal);
+		
+		movimentacao.getVaga().setStatus(Status.LIVRE);
 
 		return movimentacaoRepository.save(movimentacao);
 	}
